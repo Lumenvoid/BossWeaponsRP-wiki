@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boss Weapons Showcase</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-panel: #15151f;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --accent-dark: #1f1f2e;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Ambient Background */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(0, 0, 0, 0.8) 0%, transparent 60%),
+                linear-gradient(to bottom, #0a0a0f 0%, #15151f 100%);
+        }
+
+        /* Particle Canvas */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10,10,15,0.9) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Main Showcase Section */
+        .showcase {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+        }
+
+        .weapons-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 4rem;
+            width: 100%;
+            max-width: 1400px;
+            position: relative;
+        }
+
+        /* Weapon Cards */
+        .weapon-card {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+            aspect-ratio: 3/4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 2rem;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .weapon-card:hover {
+            transform: translateY(-20px);
+        }
+
+        .weapon-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: 24px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .weapon-card:hover .weapon-glow {
+            opacity: 1;
+        }
+
+        /* Dragon Reaper - Purple Glow */
+        .dragon-reaper .weapon-glow {
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.4) 0%, transparent 70%);
+            box-shadow: 0 0 100px rgba(139, 92, 246, 0.3);
+            animation: pulse-purple 3s infinite;
+        }
+
+        @keyframes pulse-purple {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        /* Wither Slayer - Dark Soul Energy */
+        .wither-slayer .weapon-glow {
+            background: radial-gradient(circle at center, rgba(30, 30, 40, 0.9) 0%, transparent 70%);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(100, 100, 120, 0.2);
+            animation: pulse-dark 4s infinite;
+        }
+
+        @keyframes pulse-dark {
+            0%, 100% { box-shadow: 0 0 100px rgba(0,0,0,0.8), inset 0 0 50px rgba(100,100,120,0.1); }
+            50% { box-shadow: 0 0 120px rgba(20,20,30,0.9), inset 0 0 60px rgba(120,120,140,0.3); }
+        }
+
+        /* Warden Crusher - Sonic Vibrations */
+        .warden-crusher .weapon-glow {
+            background: radial-gradient(circle at center, rgba(6, 182, 212, 0.3) 0%, transparent 70%);
+            box-shadow: 0 0 100px rgba(6, 182, 212, 0.2);
+            animation: sonic-pulse 2s infinite;
+        }
+
+        @keyframes sonic-pulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.15); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 0.4; }
+        }
+
+        /* Weapon SVG Container */
+        .weapon-visual {
+            width: 100%;
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8));
+        }
+
+        .weapon-visual svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px currentColor);
+            transition: filter 0.3s;
+        }
+
+        .weapon-card:hover .weapon-visual svg {
+            filter: drop-shadow(0 0 40px currentColor);
+        }
+
+        /* Weapon Stats/Info */
+        .weapon-info {
+            text-align: center;
+            margin-top: 2rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .weapon-card:hover .weapon-info {
+            opacity: 1;
+        }
+
+        .weapon-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        .weapon-type {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.1em;
+        }
+
+        .rarity-indicator {
+            display: inline-flex;
+            gap: 4px;
+            margin-top: 1rem;
+        }
+
+        .star {
+            width: 12px;
+            height: 12px;
+            background: currentColor;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+        }
+
+        /* Specific Weapon Styles */
+        .dragon-reaper { color: #a78bfa; }
+        .wither-slayer { color: #475569; }
+        .warden-crusher { color: #22d3ee; }
+
+        /* Cinematic Lighting Overlay */
+        .vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .weapons-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+            
+            .weapon-card {
+                max-width: 300px;
+            }
+            
+            nav {
+                padding: 1.5rem 2rem;
+            }
+        }
+
+        /* Additional ambient particles */
+        .ember {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .dragon-reaper .ember { background: #8b5cf6; box-shadow: 0 0 10px #8b5cf6; }
+        .wither-slayer .ember { background: #334155; box-shadow: 0 0 10px #000; }
+        .warden-crusher .ember { background: #06b6d4; box-shadow: 0 0 10px #06b6d4; }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"></div>
+    <canvas id="particles"></canvas>
+    <div class="vignette"></div>
+
+    <nav>
+        <div class="logo">BOSSCRAFT</div>
+        <ul class="nav-links">
+            <li><a href="#weapons">Arsenal</a></li>
+            <li><a href="#abilities">Abilities</a></li>
+            <li><a href="#crafting">Crafting</a></li>
+        </ul>
+    </nav>
+
+    <section class="showcase" id="weapons">
+        <div class="weapons-container">
+            
+            <!-- Dragon Reaper Axe -->
+            <div class="weapon-card dragon-reaper">
+                <div class="weapon-glow"></div>
+                <div class="weapon-visual">
+                    <svg viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Axe Handle -->
+                        <rect x="46" y="80" width="8" height="100" fill="#2d2d3a" rx="1"/>
+                        <rect x="46" y="80" width="8" height="20" fill="#1a1a24" rx="1"/>
+                        <!-- Axe Head -->
+                        <path d="M50 20 C30 20, 20 50, 20 70 L50 60 L80 70 C80 50, 70 20, 50 20 Z" fill="#4c1d95" stroke="#8b5cf6" stroke-width="2"/>
+                        <path d="M50 25 C35 25, 28 50, 25 65 L50 55 L75 65 C72 50, 65 25, 50 25 Z" fill="#6d28d9"/>
+                        <!-- Blade Edge -->
+                        <path d="M25 65 Q50 75 75 65" stroke="#a78bfa" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        <!-- Purple Energy Core -->
+                        <circle cx="50" cy="45" r="8" fill="#8b5cf6" filter="blur(4px)"/>
+                        <circle cx="50" cy="45" r="12" stroke="#a78bfa" stroke-width="2" fill="none" opacity="0.6">
+                            <animate attributeName="r" values="12;15;12" dur="2s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <!-- Particle Effects -->
+                        <circle cx="35" cy="40" r="2" fill="#d8b4fe">
+                            <animate attributeName="cy" values="40;35;40" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="65" cy="50" r="1.5" fill="#d8b4fe" opacity="0.8">
+                            <animate attributeName="cy" values="50;45;50" dur="2.5s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+                <div class="weapon-info">
+                    <div class="weapon-name">Dragon Reaper</div>
+                    <div class="weapon-type">Legendary Battle Axe</div>
+                    <div class="rarity-indicator">
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wither Slayer Sword -->
+            <div class="weapon-card wither-slayer" style="transform: scale(1.1); z-index: 10;">
+                <div class="weapon-glow"></div>
+                <div class="weapon-visual">
+                    <svg viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Sword Handle -->
+                        <rect x="46" y="140" width="8" height="40" fill="#1e293b" rx="2"/>
+                        <rect x="42" y="135" width="16" height="8" fill="#334155" rx="1"/>
+                        <!-- Crossguard Skull -->
+                        <circle cx="50" cy="130" r="6" fill="#0f172a"/>
+                        <circle cx="48" cy="129" r="2" fill="#64748b"/>
+                        <circle cx="52" cy="129" r="2" fill="#64748b"/>
+                        <!-- Sword Blade -->
+                        <path d="M46 60 L46 135 L50 140 L54 135 L54 60 Z" fill="#1e1b4b"/>
+                        <path d="M48 60 L48 133 L50 136 L52 133 L52 60 Z" fill="#312e81"/>
+                        <!-- Dark Energy Effect -->
+                        <path d="M50 60 L50 20" stroke="#000" stroke-width="4" stroke-linecap="round" opacity="0.8">
+                            <animate attributeName="stroke-width" values="4;6;4" dur="2s" repeatCount="indefinite"/>
+                        </path>
+                        <!-- Soul Particles -->
+                        <circle cx="45" cy="100" r="2" fill="#475569" opacity="0.8">
+                            <animate attributeName="cy" values="100;70;100" dur="4s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.8;0;0.8" dur="4s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="55" cy="90" r="1.5" fill="#64748b" opacity="0.6">
+                            <animate attributeName="cy" values="90;60;90" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.6;0;0.6" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="50" cy="80" r="2.5" fill="#1e293b" opacity="0.9">
+                            <animate attributeName="r" values="2.5;3.5;2.5" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+                <div class="weapon-info">
+                    <div class="weapon-name">Wither Slayer</div>
+                    <div class="weapon-type">Mythic Longsword</div>
+                    <div class="rarity-indicator">
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warden Crusher Hoe -->
+            <div class="weapon-card warden-crusher">
+                <div class="weapon-glow"></div>
+                <div class="weapon-visual">
+                    <svg viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Hoe Handle -->
+                        <rect x="46" y="80" width="8" height="100" fill="#164e63" rx="1"/>
+                        <!-- Sonic Emitter -->
+                        <rect x="44" y="75" width="12" height="8" fill="#0891b2" rx="1"/>
+                        <circle cx="50" cy="79" r="3" fill="#22d3ee" filter="blur(2px)"/>
+                        <!-- Hoe Head -->
+                        <path d="M50 80 Q20 80, 20 50 Q20 30, 50 30" fill="#0e7490" stroke="#06b6d4" stroke-width="2"/>
+                        <path d="M50 80 Q25 80, 25 55 Q25 40, 50 40" fill="#0891b2" opacity="0.8"/>
+                        <!-- Sonic Waves -->
+                        <path d="M20 50 Q10 50, 10 40 Q10 30, 20 30" stroke="#22d3ee" stroke-width="1.5" fill="none" opacity="0.8" stroke-linecap="round">
+                            <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.5s" repeatCount="indefinite"/>
+                        </path>
+                        <path d="M18 50 Q8 50, 8 38 Q8 26, 18 28" stroke="#67e8f9" stroke-width="1" fill="none" opacity="0.6" stroke-linecap="round">
+                            <animate attributeName="opacity" values="0.6;0;0.6" dur="1.5s" repeatCount="indefinite" begin="0.5s"/>
+                        </path>
+                        <!-- Vibration Lines -->
+                        <line x1="50" y1="85" x2="50" y2="170" stroke="#06b6d4" stroke-width="1" opacity="0.3">
+                            <animate attributeName="x1" values="50;48;50;52;50" dur="0.2s" repeatCount="indefinite"/>
+                            <animate attributeName="x2" values="50;52;50;48;50" dur="0.2s" repeatCount="indefinite"/>
+                        </line>
+                        <circle cx="15" cy="50" r="1.5" fill="#a5f3fc" opacity="0.9">
+                            <animate attributeName="cx" values="15;10;5" dur="2s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.9;0.5;0" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+                <div class="weapon-info">
+                    <div class="weapon-name">Warden Crusher</div>
+                    <div class="weapon-type">Ancient Sonic Hoe</div>
+                    <div class="rarity-indicator">
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                        <span class="star"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        // Particle System
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.5 + 0.1;
+                this.color = this.getColor();
+            }
+
+            getColor() {
+                const colors = [
+                    '139, 92, 246', // Purple
+                    '6, 182, 212',  // Cyan
+                    '71, 85, 105'   // Dark slate
+                ];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        // Create particles
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Mouse interaction for parallax
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.weapon-card');
+            const x = (window.innerWidth - e.pageX) / 50;
+            const y = (window.innerHeight - e.pageY) / 50;
+
+            cards.forEach((card, index) => {
+                const speed = (index + 1) * 0.5;
+                card.style.transform = `translateX(${x * speed}px) translateY(${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
