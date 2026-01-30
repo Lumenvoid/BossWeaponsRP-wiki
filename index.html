@@ -1,6 +1,4 @@
- 
-# Create the updated HTML file with boss-drop focus
-html_content = '''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,7 +6,7 @@ html_content = '''<!DOCTYPE html>
     <title>Boss Weapons Showcase</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        
+
         * {
             margin: 0;
             padding: 0;
@@ -289,21 +287,22 @@ html_content = '''<!DOCTYPE html>
                 align-items: center;
                 gap: 4rem;
             }
-            
+
             .weapon-card {
                 max-width: 100%;
             }
-            
+
             nav {
                 padding: 1.5rem 2rem;
             }
-            
+
             .weapon-image {
                 width: 220px;
                 height: 220px;
             }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="ambient-bg"></div>
@@ -320,7 +319,7 @@ html_content = '''<!DOCTYPE html>
 
     <section class="showcase" id="arsenal">
         <div class="weapons-container">
-            
+
             <!-- Dragon Reaper Axe -->
             <div class="weapon-card dragon-reaper">
                 <div class="weapon-glow"></div>
@@ -377,7 +376,7 @@ html_content = '''<!DOCTYPE html>
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }
-        
+
         window.addEventListener('resize', resize);
         resize();
 
@@ -409,7 +408,7 @@ html_content = '''<!DOCTYPE html>
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
-                
+
                 if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
                     this.reset();
                 }
@@ -438,11 +437,4 @@ html_content = '''<!DOCTYPE html>
         animate();
     </script>
 </body>
-</html>'''
-
-# Save the file
-with open('/mnt/kimi/output/minecraft_boss_weapons.html', 'w') as f:
-    f.write(html_content)
-
-print("Website created successfully!")
-print("File saved to: /mnt/kimi/output/minecraft_boss_weapons.html")
+</html>
